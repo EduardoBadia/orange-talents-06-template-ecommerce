@@ -1,0 +1,32 @@
+package br.com.zupacademy.eduardo.mercadolivre.controller;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.zupacademy.eduardo.mercadolivre.controller.request.UsuarioRequest;
+import br.com.zupacademy.eduardo.mercadolivre.modelo.Usuario;
+
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+	@PersistenceContext
+	private EntityManager manager;
+	
+	@Transactional
+	@PostMapping
+	public String cria(@RequestBody @Valid UsuarioRequest request) {
+	
+	Usuario novoUsuario = request.toModel();
+	manager.persist(novoUsuario);
+
+	return novoUsuario.toString();
+	}
+}
